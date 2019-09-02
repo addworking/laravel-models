@@ -1,0 +1,9 @@
+/vendor
+/.idea
+*.sublime-*
+.DS_Store
+_ide_helper.php
+/easy-coding-standard.yml
+.vscode
+docker
+.phpunit.result.cache
