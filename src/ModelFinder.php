@@ -61,9 +61,11 @@ class ModelFinder
 
     public function setDirectories(array $directories): self
     {
-        foreach ($directories as $directory) {
+        foreach ($directories as &$directory) {
+            $directory = base_path($directory);
+
             if (! is_dir($directory)) {
-                throw new RuntimeException("'{$dir}' is not a valid directory.");
+                throw new RuntimeException("'{$directory}' is not a valid directory.");
             }
         }
 
@@ -236,7 +238,7 @@ class ModelFinder
     protected function getFilesGenerator(): Generator
     {
         foreach ($this->directories as $directory) {
-            foreach ($this->filesystem->allFiles(base_path($directory)) as $file) {
+            foreach ($this->filesystem->allFiles($directory) as $file) {
                 if ($file->getExtension() == 'php') {
                     yield $file;
                 }
