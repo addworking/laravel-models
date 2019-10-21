@@ -6,10 +6,10 @@ Models is a service for Laravel 5.7+ that lets you access your model classes mor
 
 ## Installation
 
-Simply add the package to your `composer.json` and run `composer update`.
+You can install the package via composer:
 
 ```
-"addworking/laravel-models": "1.*"
+composer require addworking/laravel-models
 ```
 
 ## Configuration
