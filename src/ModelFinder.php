@@ -2,6 +2,7 @@
 
 namespace Addworking\LaravelModels;
 
+use Addworking\LaravelClassFinder\ClassFinderFacade as ClassFinder;
 use BadMethodCallException;
 use Exception;
 use Generator;
@@ -249,16 +250,12 @@ class ModelFinder
     protected function getClassesGenerator(): Generator
     {
         foreach ($this->getFilesGenerator() as $file) {
-            // strip '.php' extensions
-            $str = substr($file->getPathname(), 0, -4);
+            try {
+                $class = ClassFinder::pathToClass($file);
+            } catch (RuntimeException $e) {
+                continue;
+            }
 
-            // remove app_path() from string
-            $str  = "App/" . Str::after($str, app_path() . DIRECTORY_SEPARATOR);
-
-            // translate forward slashes (/) into namespaces separator (\)
-            $class = str_replace(DIRECTORY_SEPARATOR, '\\', $str);
-
-            // is this class a model?
             if (class_exists($class, true) && in_array(Model::class, class_parents($class))) {
                 yield $class;
             }

@@ -2,7 +2,14 @@
     "name": "addworking/laravel-models",
     "description": "A package to manage your models",
     "type": "library",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://addworking-satis.herokuapp.com"
+        }
+    ],
     "require": {
+        "addworking/laravel-class-finder": "^1.1",
         "illuminate/support": "^6.0",
         "ramsey/uuid": "^3.8",
         "illuminate/filesystem": "^6.0",
