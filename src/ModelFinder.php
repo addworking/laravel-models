@@ -236,28 +236,13 @@ class ModelFinder
         return new $class;
     }
 
-    protected function getFilesGenerator(): Generator
-    {
-        foreach ($this->directories as $directory) {
-            foreach ($this->filesystem->allFiles($directory) as $file) {
-                if ($file->getExtension() == 'php') {
-                    yield $file;
-                }
-            }
-        }
-    }
-
     protected function getClassesGenerator(): Generator
     {
-        foreach ($this->getFilesGenerator() as $file) {
-            try {
-                $class = ClassFinder::pathToClass($file);
-            } catch (RuntimeException $e) {
-                continue;
-            }
-
-            if (class_exists($class, true) && in_array(Model::class, class_parents($class))) {
-                yield $class;
+        foreach ($this->directories as $directory) {
+            foreach (ClassFinder::classesIn($directory) as $class) {
+                if (class_exists($class, true) && in_array(Model::class, class_parents($class))) {
+                    yield $class;
+                }
             }
         }
     }
