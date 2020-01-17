@@ -144,6 +144,10 @@ class ModelFinder
 
     public function get(string $class, $arg)
     {
+        if (! class_exists($class) && is_null($class = $this->getClassFromBasename($alias = $class))) {
+            throw new RuntimeException("Unable to locate a valid classname for alias: {$alias}");
+        }
+
         if (is_null($arg)) {
             return $class;
         }
