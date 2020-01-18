@@ -106,7 +106,15 @@ class ModelFinder
 
     public function isModel($object): bool
     {
-        return $object instanceof Model;
+        if (is_object($object)) {
+            return $object instanceof Model;
+        }
+
+        if (is_string($object) && class_exists($object)) {
+            return in_array(Model::class, class_parents($object));
+        }
+
+        return false;
     }
 
     public function exists($model, $default = null)
@@ -244,7 +252,7 @@ class ModelFinder
     {
         foreach ($this->directories as $directory) {
             foreach (ClassFinder::classesIn($directory) as $class) {
-                if (class_exists($class, true) && in_array(Model::class, class_parents($class))) {
+                if ($this->isModel($class)) {
                     yield $class;
                 }
             }
