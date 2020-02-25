@@ -9,6 +9,7 @@ use Generator;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -111,7 +112,8 @@ class ModelFinder
         }
 
         if (is_string($object) && class_exists($object)) {
-            return in_array(Model::class, class_parents($object));
+            return   in_array(Model::class, class_parents($object))
+                && ! in_array(Pivot::class, class_parents($object));
         }
 
         return false;
